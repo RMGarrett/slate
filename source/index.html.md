@@ -1,15 +1,11 @@
 ---
-title: API Reference
+title: The FA API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
-  - python
-  - javascript
+  - typescript
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
+   - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
 
 includes:
   - errors
@@ -19,221 +15,339 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Please note all of the endpoints/responses are open to change.
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
-
-This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
-
-# Authentication
-
-> To authorize, use this code:
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
+```typescript
+interface ItemsResponse {
+  results: string[];
+}
 ```
 
-```python
-import kittn
+# Users
 
-api = kittn.authorize('meowmeowmeow')
-```
+## Get a Specific User
 
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
+```typescript
+http.get<ItemsResponse>('https://api.thefa.biz/v1/users/1').subscribe(data => {
+  this.results = data.results;
+});
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
+{
+  "data": [
+     {
+       "id": 1,
+       "name": "John Doe",
+       "email": "john.doe@aptsolutions.net",
+       "username": "johndoe99",
+       "date_of_birth": "1999-05-13T00:00:00,000000000Z",
+       "gender": "Male",
+       "primary_team": 1
+     }
+  ]
+}
 ```
 
-This endpoint retrieves all kittens.
+This endpoint retrieves all users.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`GET https://api.thefa.biz/v1/users/<ID>`
 
 ### Query Parameters
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+Parameter | Description
+--------- | ----------
+ID | The ID of the user to retrieve
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+## Get Multiple Users
+
+```typescript
+http.get<ItemsResponse>('https://api.thefa.biz/v1/users/1,2,3').subscribe(data => {
+  this.results = data.results;
+});
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "data": [
+        {
+            "id": 1,
+            "name": "John Doe",
+            "email": "john.doe@test.net",
+            "username": "johndoe99",
+            "date_of_birth": "1999-05-13T00:00:00,000000000Z",
+            "gender": "Male"
+        },
+        {
+            "id": 2,
+            "name": "Paul Smith",
+            "email": "paul.smith@hotmail.com",
+            "username": "psmith",
+            "date_of_birth": "1999-05-13T00:00:00,000000000Z",
+            "gender": "Male" 
+        },
+        {
+            "id": 3,
+            "name": "Jane Doe",
+            "email": "jane.doe@test.net",
+            "username": "jonedoe99",
+            "date_of_birth": "1999-05-13T00:00:00,000000000Z",
+            "gender": "Female" 
+        }
+    ]
+}
+```
+
+This endpoint retrieves multiple users
+
+### HTTP Request
+
+`GET https://api.thefa.biz/v1/users/<ID>,<ID>`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+ID | The ID of the user to retrieve
+
+# Arguments
+
+## Get all Arguments
+
+```typescript
+http.get<ItemsResponse>('https://api.thefa.biz/v1/arguments').subscribe(data => {
+  this.results = data.results;
+});
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "data": [
+     {
+        "id": 1,
+        "title": "Lorem Ipsum",
+        "summary": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
+        "content": "<h1>HTML Ipsum Presents</h1><p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href=\"#\">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p><h2>Header Level 2</h2>",
+        "comment_count": 59,
+        "like_count": 100,
+        "publish_date": "2017-03-13T12:30:45,123456789Z",
+        "expiry_date": "2017-05-13T12:30:45,123456789Z",
+        "_links": {
+           "authors": 1
+        }
+     },
+     {
+        "id": 2,
+        "title": "Lorem Ipsum 2",
+        "summary": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
+        "content": "<h1>HTML Ipsum Presents</h1><p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href=\"#\">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p><h2>Header Level 2</h2>"
+        "author": 1,
+        "comment_count": 10,
+        "like_count": 20,
+        "publish_date": "2017-03-13T12:30:45,123456789Z",
+        "expiry_date": "2036-05-13T12:30:45,123456789Z",
+        "_links": {
+           "authors": 1
+        }
+     }
+  ],
+  "_linked": {
+     "authors": [
+        {
+           "id": 1,
+           "name": "John Doe",
+           "username": "johndoe99"
+        } 
+     ]
+  },
+  "pagination": {
+     "total": 1000,
+     "count": 12,
+     "per_page": 12,
+     "current_page": 1,
+     "total_pages": 84
+  }
+}
+```
+
+This endpoint retrieves all arguments.
+
+### HTTP Request
+
+`GET https://api.thefa.biz/v1/arguments`
+
+<aside class="info">
+    All dates in the API conform to ISO-8601 Standards
 </aside>
 
-## Get a Specific Kitten
+### Query Parameters
 
-```ruby
-require 'kittn'
+Parameter | default | Description
+--------- | ----------- | -----------
+page | 1 | The page data wanted
+items | 12 | number of items per page
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
+## Get a specific argument
 
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+```typescript
+http.get<ItemsResponse>('https://api.thefa.biz/v1/arguments/2').subscribe(data => {
+  this.results = data.results;
+});
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  "data": [
+     {
+        "id": 1,
+        "title": "Lorem Ipsum",
+        "summary": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
+        "content": "<h1>HTML Ipsum Presents</h1><p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href=\"#\">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p><h2>Header Level 2</h2>",
+        "comment_count": 59,
+        "like_count": 100,
+        "_links": {
+           "authors": 1 
+        },
+        "comments": {
+           "data": [
+              {
+                 "id": 10,
+                 "comment": "lorem Ipsum! :)",
+                 "created_at": "2017-03-13T12:30:45,123456789Z",
+                 "like_count": 100,
+                 "dislike_count": 900,
+                 "_links": {
+                    "authors": 2
+                 }
+              },
+              {
+                 "id": 10,
+                 "comment": "lorem Ipsum! :)",
+                 "created_at": "2017-03-13T12:30:45,123456789Z",
+                 "like_count": 100,
+                 "dislike_count": 900,
+                 "_links": {
+                    "authors": 1
+                 }
+              }
+           ]
+        },
+        "publish_date": "2017-03-13T12:30:45,123456789Z",
+        "expiry_date": "2017-05-13T12:30:45,123456789Z"
+     }
+  ],
+  "_linked": {
+     "authors": [
+        {
+           "id": 1,
+           "name": "John Doe",
+           "username": "johndoe99"
+        },
+        {
+           "id": 3,
+           "name": "Jane Doe",
+           "username": "janedoe99"
+        } 
+     ]
+  }
 }
 ```
 
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+This endpoint retrieves all arguments.
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`GET https://api.thefa.biz/v1/arguments/<ID>`
 
 ### URL Parameters
 
 Parameter | Description
 --------- | -----------
-ID | The ID of the kitten to retrieve
+ID | ID of the argument to load
 
-## Delete a Specific Kitten
+### Query Parameters
 
-```ruby
-require 'kittn'
+Parameter | default | Description
+--------- | ----------- | -----------
+include_comments | true | preload the first page of comments
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
+## Get Comments Related to a Argument
 
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
+```typescript
+http.get<ItemsResponse>('https://api.thefa.biz/v1/arguments/2/comments').subscribe(data => {
+  this.results = data.results;
+});
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "deleted" : ":("
+  "data": [
+     {   
+         "id": 10,
+         "comment": "lorem Ipsum! :)",
+         "created_at": "2017-03-13T12:30:45,123456789Z",
+         "like_count": 100,
+         "dislike_count": 900,
+         "_links": {
+            "authors": 2
+         }
+     },
+     {
+         "id": 10,
+         "comment": "lorem Ipsum! :)",
+         "created_at": "2017-03-13T12:30:45,123456789Z",
+         "like_count": 100,
+         "dislike_count": 900,
+         "_links": {
+            "authors": 1
+         }
+     }
+  ],
+  "_linked": {
+     "authors": [
+        {
+           "id": 1,
+           "name": "John Doe",
+           "username": "johndoe99"
+        },
+        {
+           "id": 3,
+           "name": "Jane Doe",
+           "username": "janedoe99"
+        } 
+     ]
+  },
+  "pagination": {
+     "total": 1000,
+     "count": 12,
+     "per_page": 12,
+     "current_page": 1,
+     "total_pages": 84
+  }
 }
 ```
 
-This endpoint retrieves a specific kitten.
+This endpoint retrieves all comments on a argument; paginated.
 
 ### HTTP Request
 
-`DELETE http://example.com/kittens/<ID>`
+`GET https://api.thefa.biz/v1/arguments/<ID>/comments`
 
-### URL Parameters
+### Query Parameters
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
-
+Parameter | default | Description
+--------- | ----------- | -----------
+page | 1 | The page data wanted
+items | 12 | number of items per page
